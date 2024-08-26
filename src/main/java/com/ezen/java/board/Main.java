@@ -7,10 +7,20 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("== 자바 텍스트 게시판 작동 ==");
-        System.out.print("명령) ");
-        String cmd = sc.nextLine();
+        while (true) {
+            System.out.print("명령) ");
+            String cmd = sc.nextLine();
 
-        System.out.println("입력받은 명령어 : " + cmd);
+            if(cmd.equals("exit")) {
+                break;
+            }
+
+            System.out.println("입력받은 명령어 : " + cmd);
+        }
+
+
+
         System.out.println("== 자바 텍스트 게시판 종료 ==");
+        sc.close();
     }
 }
