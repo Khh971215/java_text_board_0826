@@ -8,16 +8,19 @@ import java.util.Scanner;
 
 
 public class Main {
+    static void makeTestData(List<Article> articles) {
+        articles.add(new Article(1,"제목1","내용1"));
+        articles.add(new Article(2,"제목2","내용2"));
+        articles.add(new Article(3,"제목3","내용3"));
+    }
     public static void main(String[] args) {
         int lastArticleId = 0;
         Article lastArticle = null;
 
         List<Article> articles = new ArrayList<>();
 
-        //테스트 게시물
-        articles.add(new Article(1,"제목1","내용1"));
-        articles.add(new Article(2,"제목2","내용2"));
-        articles.add(new Article(3,"제목3","내용3"));
+        makeTestData(articles);
+
 
         Scanner sc = new Scanner(System.in);
         System.out.println("== 자바 텍스트 게시판 ==");
@@ -54,7 +57,7 @@ public class Main {
                 System.out.println("|   번호  |   제목  |");
                 System.out.println("-------------------");
 
-                for(int i = 0; i<articles.size(); i++) {
+                for(int i = articles.size() -1 ; i >= 0; i--) {
                     Article article = articles.get(i);
                     System.out.printf("|   %d    |   %s  |\n", article.id, article.subject);
                 }
@@ -69,6 +72,8 @@ public class Main {
         System.out.println("== 자바 텍스트 게시판 종료 ==");
         sc.close();
     }
+
+
 }
 class Article extends Object {
     int id;
