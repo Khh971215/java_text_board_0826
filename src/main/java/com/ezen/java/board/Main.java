@@ -5,9 +5,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        int lastArticleId = 0;
 
-        System.out.println("== 자바 텍스트 게시판 작동 ==");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("== 자바 텍스트 게시판 ==");
+
         while (true) {
             System.out.print("명령) ");
             String cmd = sc.nextLine();
@@ -20,7 +22,9 @@ public class Main {
                 System.out.print("내용 : ");
                 String content = sc.nextLine();
 
-                int id = 1;
+
+                int id = ++lastArticleId;
+
 
                 System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
             }
@@ -31,7 +35,7 @@ public class Main {
                 System.out.println("잘못 된 명령어입니다.");
             }
 
-            
+
         }
 
 
