@@ -45,8 +45,13 @@ public class Main {
         sc.close();
     }
 }
-class Article {
+class Article extends Object {
     int id;
     String subject;
     String content;
+
+    @Override // 어노테이션
+    public String toString() { //메서드 오버라이딩
+        return "{id : %d, subject : \"%s\", content : \"%s\"}".formatted(id, subject, content);
+    }
 }
