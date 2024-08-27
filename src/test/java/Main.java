@@ -6,7 +6,9 @@ public class Main {
     public static void main(String[] args) {
         // 문제점 : 현재 우리 파싱로직은 유연하지 못한다.
         // 왜? 파라미터가 추가되면 추가 된 내용에 대해서 추가 작업을 해줘야 하기 때문에..
-        String queryString = "b=20&c=30&d=40&a=100";
+        String queryString = "hit=73&id=3&memberId=13&boardId=2";
+
+        // 압축해제 시작
         String[] queryStrignBits = queryString.split("&");
         /*
         for(String bit : queryStrignBits) {
@@ -26,12 +28,9 @@ public class Main {
 
             // System.out.printf("%s : %s\n", paramName, paramValue);
         }
-
-        for (int i = 0; i <paramNames.size(); i++) {
-            String paramName = paramNames.get(i);
-            int paramValue = paramValues.get(i);
-
-            System.out.printf("%s : %d\n", paramName, paramValue);
-        }
+        // 압축해제 끝
+        System.out.println(paramNames);
+        int boardIdIndex = paramNames.indexOf("boardId");
+        System.out.println("boardId : " + paramValues.get(boardIdIndex));
     }
 }
