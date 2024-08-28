@@ -2,34 +2,51 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-       Map<String, String> params = Util.getParamsFromUrl("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&writerName=신짱구&calc=[a=b]");
+        Rq rq = new Rq("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&writerName=신짱구&calc=[a=b]");
+        Map<String, String> params = rq.getParams();
+        System.out.println(rq.getParams());
+        System.out.println(rq.getParams());
         System.out.println(params);
-        System.out.println(params.get("id")); // 3
-        System.out.println(params.get("MemberId")); // 13
-        System.out.println(params.get("boardId")); // 2
-        System.out.println(params.get("hit")); // 73
-        System.out.println(params.get("writerName")); // 신짱구
 
+        String urlPath = rq.getUrlPath();
+        System.out.println(rq.getUrlPath());
+        System.out.println(rq.getUrlPath());
+        System.out.println(urlPath);
 
+    }
+}
 
+class Rq {
+    String url;
 
+    Rq(String url) {
+        this.url = url;
+    }
+
+    public Map<String, String> getParams() {
+        return Util.getParamsFromUrl(url);
+    }
+
+    public String getUrlPath() {
+        return  Util.getUrlPathFromUrl(url);
     }
 }
 
 class Util {
     static Map<String, String> getParamsFromUrl(String url) {
-        Map<String, String> params = new HashMap<>();
+        System.out.println("getParamsFromUrl 실행됌");
+        Map<String, String> params = new LinkedHashMap<>();
         String[] urlBits = url.split("\\?", 2);
 
-        if(urlBits.length == 1) {
+        if (urlBits.length == 1) {
             return params;
         }
 
         String queryStr = urlBits[1];
-        for(String bit : queryStr.split("&")) {
+        for (String bit : queryStr.split("&")) {
             String[] bits = bit.split("=", 2);
 
-            if(bits.length == 1) {
+            if (bits.length == 1) {
                 continue;
             }
 
@@ -37,6 +54,11 @@ class Util {
         }
 
         return params;
+    }
+
+    static String getUrlPathFromUrl(String url) {
+        System.out.println("getUrlPathFromUrl 실행됌");
+        return url.split("\\?", 2)[0];
     }
 }
 
