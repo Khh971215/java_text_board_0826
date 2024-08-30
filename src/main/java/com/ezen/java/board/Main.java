@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 public class Main {
     static void makeTestData(List<Article> articles) {
         IntStream.rangeClosed(1, 100)
-                        .forEach( i -> articles.add(new Article(i,"제목"+i,"내용1"+i)));
+                .forEach(i -> articles.add(new Article(i, "제목" + i, "내용1" + i)));
 
     }
 
@@ -18,7 +18,7 @@ public class Main {
 
         makeTestData(articles);
 
-        if(!articles.isEmpty()) {
+        if (!articles.isEmpty()) {
             lastArticleId = articles.get(articles.size() - 1).id;
         }
 
@@ -31,7 +31,7 @@ public class Main {
 
             Rq rq = new Rq(cmd);
 
-            if(rq.getUrlPath().equals("/usr/article/write")) {
+            if (rq.getUrlPath().equals("/usr/article/write")) {
                 System.out.println("== 게시물 작성 == ");
                 System.out.print("제목 : ");
                 String subject = sc.nextLine();
@@ -46,8 +46,8 @@ public class Main {
 
                 articles.add(article);
                 System.out.printf("%d번 게시물이 등록되었습니다.\n", article.id);
-            }else if(rq.getUrlPath().equals("/usr/article/detail")) {
-                Map<String,String> params = rq.getParams();
+            } else if (rq.getUrlPath().equals("/usr/article/detail")) {
+                Map<String, String> params = rq.getParams();
                 int id = 0;
 
                 try {
@@ -62,8 +62,8 @@ public class Main {
                     continue;
                 }
 
-                if(id > articles.size()) {
-                    System.out.printf("%d번 게시물은 존재하지 않습니다.\n",id);
+                if (id > articles.size()) {
+                    System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
                     continue;
                 }
 
@@ -74,35 +74,34 @@ public class Main {
                 System.out.printf("제목 : %s\n", article.subject);
                 System.out.printf("내용 : %s\n", article.content);
 
-            }else if(rq.getUrlPath().equals("/usr/article/list")){
-                Map<String,String> params = rq.getParams();
+            } else if (rq.getUrlPath().equals("/usr/article/list")) {
+                Map<String, String> params = rq.getParams();
 
-                if(articles.isEmpty()) {
+                if (articles.isEmpty()) {
                     System.out.println("게시물이 존재하지 않습니다.");
                     continue;
                 }
 
                 boolean orderByIdDesc = true;
 
-                if(params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+                if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
                     orderByIdDesc = false;
                 }
 
                 //검색 시작
                 List<Article> filltereArticles = articles;
 
-                if(params.containsKey("searchKeyword")) {
+                if (params.containsKey("searchKeyword")) {
                     String searchKeyword = params.get("searchKeyword");
 
                     filltereArticles = new ArrayList<>();
 
-                    for(Article article : articles) {
-                        if(article.subject.contains(searchKeyword) || article.content.contains(searchKeyword)) {
+                    for (Article article : articles) {
+                        if (article.subject.contains(searchKeyword) || article.content.contains(searchKeyword)) {
                             filltereArticles.add(article);
                         }
                     }
                 }
-
 
 
                 //검색 끝
@@ -116,28 +115,18 @@ public class Main {
                 System.out.println("-------------------");
 
 
-
-                if(orderByIdDesc) { // idAsc(오름차순)가 없으면 기본값인 idDesc(내림차순)
-                    for(int i = soredArticles.size() -1 ; i >= 0; i--) {
-                        Article article = soredArticles.get(i);
-                        System.out.printf("|   %d    |   %s  |\n", article.id, article.subject);
-                    }
+                if (orderByIdDesc) { // idAsc(오름차순)가 없으면 기본값인 idDesc(내림차순)
+                    soredArticles = Util.reverseList(soredArticles);
                 }
-                else {
-                    for(Article article : soredArticles) {
-                        System.out.printf("|   %d    |   %s  |\n", article.id, article.subject);
-                    }
+
+                for (Article article : soredArticles) {
+                    System.out.printf("|   %d    |   %s  |\n", article.id, article.subject);
                 }
 
 
-
-
-
-
-
-            }else if(rq.getUrlPath().equals("exit")) {
+            } else if (rq.getUrlPath().equals("exit")) {
                 break;
-            }else {
+            } else {
                 System.out.println("잘못 된 명령어입니다.");
             }
         }
@@ -148,12 +137,13 @@ public class Main {
 
 
 }
+
 class Article extends Object {
     int id;
     String subject;
     String content;
 
-    Article (int id , String subject, String content) {
+    Article(int id, String subject, String content) {
         this.id = id;
         this.subject = subject;
         this.content = content;
@@ -212,4 +202,16 @@ class Util {
 
         return url.split("\\?", 2)[0];
     }
+
+    //이 함수는 원본리스트를 훼손하지 않고, 새 리스트를 만듭니다.
+    //즉 정렬이 반대인 복사본리스트를 만들어서 반환합니다.
+    public static <T> List<T> reverseList(List<T> list) {
+        List<T> reverse = new ArrayList<>(list.size());
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            reverse.add(list.get(i));
+        }
+        return reverse;
+    }
+
 }
