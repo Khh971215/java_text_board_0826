@@ -5,17 +5,19 @@ import java.util.stream.IntStream;
 
 
 public class Main {
-    static void makeTestData(List<Article> articles) {
+    static int lastArticleId = 0;
+    static List<Article> articles = new ArrayList<>();
+
+    static void makeTestData() {
         IntStream.rangeClosed(1, 100)
                 .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
 
     }
 
     public static void main(String[] args) {
-        int lastArticleId = 0;
-        List<Article> articles = new ArrayList<>();
 
-        makeTestData(articles);
+
+        makeTestData();
 
         if (!articles.isEmpty()) {
             lastArticleId = articles.get(articles.size() - 1).id;
@@ -31,16 +33,15 @@ public class Main {
             Rq rq = new Rq(cmd);
 
             if (rq.getUrlPath().equals("/usr/article/write")) {
-                actionUserArticleWrite(sc, articles, lastArticleId);
-                lastArticleId++;
+                actionUserArticleWrite(sc);
             } else if (rq.getUrlPath().equals("/usr/article/detail")) {
-                actionUserArticleDetail(rq, articles);
+                actionUserArticleDetail(rq);
             } else if (rq.getUrlPath().equals("/usr/article/list")) {
-                actionUserArticleList(rq, articles);
+                actionUserArticleList(rq);
             } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-                actionUserArticleModify(sc, rq, articles);
+                actionUserArticleModify(sc, rq);
             } else if (rq.getUrlPath().equals("/usr/article/delete")) {
-                actionUserArticleDelete(rq, articles);
+                actionUserArticleDelete(rq);
             } else if (rq.getUrlPath().equals("exit")) {
                 break;
             } else {
@@ -52,7 +53,7 @@ public class Main {
         sc.close();
     }
 
-    private static void actionUserArticleDelete(Rq rq, List<Article> articles) {
+    private static void actionUserArticleDelete(Rq rq) {
         Map<String, String> params = rq.getParams();
         int id = 0;
 
@@ -96,7 +97,7 @@ public class Main {
 
 
 
-    private static void actionUserArticleModify(Scanner sc, Rq rq, List<Article> articles) {
+    private static void actionUserArticleModify(Scanner sc, Rq rq) {
         Map<String, String> params = rq.getParams();
         int id = 0;
 
@@ -133,7 +134,7 @@ public class Main {
         System.out.printf("내용 : %s\n", article.content);
     }
 
-    static void actionUserArticleWrite(Scanner sc, List<Article> articles, int lastArticleId) {
+    static void actionUserArticleWrite(Scanner sc) {
         System.out.println("== 게시물 작성 == ");
         System.out.print("제목 : ");
         String subject = sc.nextLine();
@@ -150,7 +151,7 @@ public class Main {
         System.out.printf("%d번 게시물이 등록되었습니다.\n", article.id);
     }
 
-    static void actionUserArticleDetail(Rq rq, List<Article> articles) {
+    static void actionUserArticleDetail(Rq rq) {
         Map<String, String> params = rq.getParams();
         int id = 0;
 
@@ -180,7 +181,7 @@ public class Main {
         System.out.printf("내용 : %s\n", article.content);
     }
 
-    static void actionUserArticleList(Rq rq, List<Article> articles) {
+    static void actionUserArticleList(Rq rq) {
         Map<String, String> params = rq.getParams();
 
         if (articles.isEmpty()) {
