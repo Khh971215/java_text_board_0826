@@ -1,4 +1,4 @@
-package com.ezen.java.board;
+package com.ezen.java.board.article;
 
 public class Article {
     int id;
