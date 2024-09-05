@@ -1,5 +1,7 @@
 package com.ezen.java.board;
 
+import com.ezen.java.board.container.Container;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -23,23 +25,22 @@ public class Main {
             lastArticleId = articles.get(articles.size() - 1).id;
         }
 
-        Scanner sc = new Scanner(System.in);
         System.out.println("== 자바 텍스트 게시판 ==");
 
         while (true) {
             System.out.print("명령) ");
-            String cmd = sc.nextLine();
+            String cmd = Container.scanner.nextLine();
 
             Rq rq = new Rq(cmd);
 
             if (rq.getUrlPath().equals("/usr/article/write")) {
-                actionUserArticleWrite(sc);
+                actionUserArticleWrite();
             } else if (rq.getUrlPath().equals("/usr/article/detail")) {
                 actionUserArticleDetail(rq);
             } else if (rq.getUrlPath().equals("/usr/article/list")) {
                 actionUserArticleList(rq);
             } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-                actionUserArticleModify(sc, rq);
+                actionUserArticleModify(rq);
             } else if (rq.getUrlPath().equals("/usr/article/delete")) {
                 actionUserArticleDelete(rq);
             } else if (rq.getUrlPath().equals("exit")) {
@@ -50,7 +51,7 @@ public class Main {
         }
 
         System.out.println("== 자바 텍스트 게시판 종료 ==");
-        sc.close();
+        Container.scanner.close();
     }
 
     private static void actionUserArticleDelete(Rq rq) {
@@ -69,17 +70,6 @@ public class Main {
             return;
         }
 
-        /*
-        // 별도의 함수로 분리
-        Article findArticle = null;
-
-        for(Article article : articles) {
-            if(article.id == id) {
-                findArticle = article;
-            }
-
-        }
-        */
 
         Article article = articleFindById(id, articles);
 
@@ -97,7 +87,7 @@ public class Main {
 
 
 
-    private static void actionUserArticleModify(Scanner sc, Rq rq) {
+    private static void actionUserArticleModify(Rq rq) {
         Map<String, String> params = rq.getParams();
         int id = 0;
 
@@ -121,10 +111,10 @@ public class Main {
         }
 
         System.out.print("새 제목 : ");
-        article.subject = sc.nextLine();
+        article.subject = Container.scanner.nextLine();
 
         System.out.print("새 내용 : ");
-        article.content = sc.nextLine();
+        article.content = Container.scanner.nextLine();
 
         System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
 
@@ -134,13 +124,13 @@ public class Main {
         System.out.printf("내용 : %s\n", article.content);
     }
 
-    static void actionUserArticleWrite(Scanner sc) {
+    static void actionUserArticleWrite() {
         System.out.println("== 게시물 작성 == ");
         System.out.print("제목 : ");
-        String subject = sc.nextLine();
+        String subject = Container.scanner.nextLine();
 
         System.out.print("내용 : ");
-        String content = sc.nextLine();
+        String content = Container.scanner.nextLine();
 
 
         int id = ++lastArticleId;
